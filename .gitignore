@@ -1,0 +1,13 @@
+# Dependencias de Node.js
+node_modules/
+
+# Directorio de construcción
+build/
+dist/
+
+# Archivos de entorno
+.env
+
+# Otros archivos o carpetas que quieras ignorar
+.DS_Store
+*.log
