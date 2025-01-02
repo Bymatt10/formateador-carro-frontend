@@ -5,6 +5,7 @@ node_modules/
 build/
 dist/
 
+.idea
 # Archivos de entorno
 .env
 
