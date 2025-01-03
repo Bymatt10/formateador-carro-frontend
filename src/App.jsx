@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 function App() {
     const [text, setText] = useState('');
-    const [phones, setPhones] = useState([{carrier: '', phoneNumber: '', error: ''}]);
+    const [phones, setPhones] = useState([{ carrier: '', phoneNumber: '', error: '' }]);
     const [response, setResponse] = useState('');
 
     const handleAddPhone = () => {
-        setPhones([...phones, {carrier: '', phoneNumber: '', error: ''}]);
+        setPhones([...phones, { carrier: '', phoneNumber: '', error: '' }]);
     };
 
     const handlePhoneChange = (index, field, value) => {
@@ -60,6 +60,50 @@ function App() {
             console.error('Error al enviar:', error);
             setResponse('No se pudo conectar con el servidor.');
         }
+    };
+
+    // Función para copiar al portapapeles
+    const copyToClipboard = async (text) => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                alert("¡Respuesta copiada!");
+            } catch (err) {
+                console.error('Error al usar la API Clipboard:', err);
+                fallbackCopyTextToClipboard(text);
+            }
+        } else {
+            fallbackCopyTextToClipboard(text);
+        }
+    };
+
+    // Método de reserva para copiar al portapapeles
+    const fallbackCopyTextToClipboard = (text) => {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+
+        // Evitar que el textarea afecte el diseño
+        textArea.style.position = "fixed";
+        textArea.style.top = "-9999px";
+        textArea.style.left = "-9999px";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                alert("¡Respuesta copiada!");
+            } else {
+                alert("No se pudo copiar la respuesta.");
+            }
+        } catch (err) {
+            console.error('Error al usar execCommand:', err);
+            alert("No se pudo copiar la respuesta.");
+        }
+
+        document.body.removeChild(textArea);
     };
 
     return (
@@ -152,17 +196,14 @@ function App() {
                             <div className="relative px-4 py-3">
                                 <h3 className="text-black text-lg font-bold pb-2">Response</h3>
                                 <div className="relative">
-            <pre
-                className="bg-gray-100 p-4 rounded text-sm whitespace-pre-wrap relative"
-                id="responseText"
-            >
-                {response}
-            </pre>
+                                    <pre
+                                        className="bg-gray-100 p-4 rounded text-sm whitespace-pre-wrap relative"
+                                        id="responseText"
+                                    >
+                                        {response}
+                                    </pre>
                                     <button
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(response);
-                                            alert("¡Respuesta copiada!");
-                                        }}
+                                        onClick={() => copyToClipboard(response)}
                                         className="absolute top-2 right-2 flex items-center justify-center w-6 h-6 bg-gray-300 rounded-full hover:bg-gray-400"
                                         aria-label="Copiar respuesta"
                                     >
@@ -184,8 +225,7 @@ function App() {
                 </div>
             </div>
         </div>
-    )
-        ;
+    );
 }
 
 export default App;
