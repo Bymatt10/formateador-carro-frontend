@@ -54,7 +54,7 @@ function App() {
                 const formattedText = await res.text();
                 setResponse(formattedText.trim());
             } else {
-                setResponse(`Hubo un error en el servidor. Código: ${res.status}`);
+                setResponse(`Hubo un error en el servidorr. Código: ${res.status}`);
             }
         } catch (error) {
             console.error('Error al enviar:', error);
