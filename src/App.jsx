@@ -42,7 +42,7 @@ function App() {
         };
 
         try {
-            const res = await fetch('http://localhost:3001/api/v1/format/text', {
+            const res = await fetch('http://147.93.133.214:3001/api/v1/format/text', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
